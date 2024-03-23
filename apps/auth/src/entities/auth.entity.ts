@@ -4,7 +4,7 @@ import { RoleEnum } from '../enums/role.enums';
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   name: string;

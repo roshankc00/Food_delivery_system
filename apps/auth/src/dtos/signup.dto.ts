@@ -16,8 +16,4 @@ export class SignUpDto {
   @IsString()
   @IsNotEmpty()
   phoneNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  isActive: boolean;
 }

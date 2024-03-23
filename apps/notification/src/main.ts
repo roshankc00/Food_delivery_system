@@ -9,6 +9,6 @@ async function bootstrap() {
     path: 'localhost',
     port: '3004',
   });
-  await app.listen(3000);
+  app.startAllMicroservices();
 }
 bootstrap();

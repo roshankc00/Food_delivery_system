@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
+import { UserEntity } from 'apps/auth/src/entities/auth.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -10,7 +11,7 @@ import { ConfigService } from '@nestjs/config';
       username: 'nestjsauth',
       password: 'nestjsauth',
       database: 'nestjsauth',
-      entities: ['dist/apps/**/*.entity{.ts,.js}'],
+      entities: [UserEntity],
       synchronize: true,
     }),
   ],
