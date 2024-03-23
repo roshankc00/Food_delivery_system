@@ -1,0 +1,16 @@
+version: '9.8'
+services:
+  mysql:
+    container_name: mysql_nestjsmicroservices
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_USER=nestjsmicro
+      - MYSQL_DATABASE=nestjsmicro
+      - MYSQL_ROOT_PASSWORD=nestjsmicro
+      - MYSQL_PASSWORD=nestjsmicro
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./docker-volumes/mysql:/var/lib/mysql
