@@ -1,38 +1,24 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { IncreaseDecreaseCartDto } from './dto/increaseDecreaseCart.dto';
 
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
-  @Post()
-  async haha(@Body('id') id: string) {
-    const data = await this.cartService.increaseProductOfCart(id);
-    console.log(data);
-    return data;
+  @Post('increaseCartQuantity')
+  increaseProductToCart(
+    @Body() increaseDecreaseCartDto: IncreaseDecreaseCartDto,
+  ) {
+    return this.cartService.increaseProductOfCart(increaseDecreaseCartDto);
   }
-
-  @Get()
-  findAll() {
-    return this.cartService.findAll();
+  @Post('decreaseCartQuantity')
+  decreaseCartQuantity(
+    @Body() increaseDecreaseCartDto: IncreaseDecreaseCartDto,
+  ) {
+    return this.cartService.increaseProductOfCart(increaseDecreaseCartDto);
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
-  }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
+    return this.cartService.remove(id);
   }
 }

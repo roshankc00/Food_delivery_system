@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigService } from '@nestjs/config';
 import { UserEntity } from '@app/common/entities/user.entity';
 import { CategoryEntity } from '@app/common/entities/category.entity';
 import { FoodEntity } from '@app/common/entities/food.entity';
 import { OrderEntity } from '../entities';
 import { CartEntity } from '../entities/cart.entity';
+import { CartItemEntity } from '../entities/CartItem.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -21,6 +21,7 @@ import { CartEntity } from '../entities/cart.entity';
         FoodEntity,
         CartEntity,
         OrderEntity,
+        CartItemEntity,
       ],
       synchronize: true,
     }),

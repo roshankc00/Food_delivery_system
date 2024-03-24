@@ -6,26 +6,27 @@ import {
   UpdateDateColumn,
   Timestamp,
   JoinColumn,
+  ManyToMany,
   OneToMany,
   OneToOne,
 } from 'typeorm';
 import { UserEntity } from './user.entity';
-import { CartItemEntity } from './CartItem.entity';
+import { FoodEntity } from './food.entity';
+import { CartEntity } from './cart.entity';
 
 @Entity()
-export class CartEntity {
+export class CartItemEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  userId: string;
+  quantity: string;
 
-  @OneToOne(() => CartItemEntity, (cartItem) => cartItem.cart)
-  cartItems: CartItemEntity;
+  @OneToOne(() => FoodEntity, (food) => food.cart)
+  foods: FoodEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.cart)
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  @OneToMany(() => CartEntity, (cart) => cart.cartItems)
+  cart: CartEntity;
 
   @Column({ default: false })
   isDeleted: boolean;

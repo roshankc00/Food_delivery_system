@@ -11,6 +11,7 @@ import {
 } from 'typeorm';
 import { CategoryEntity } from './category.entity';
 import { CartEntity } from './cart.entity';
+import { CartItemEntity } from './CartItem.entity';
 
 @Entity()
 export class FoodEntity {
@@ -39,7 +40,7 @@ export class FoodEntity {
   @JoinColumn({ name: 'categoryId' })
   category: CategoryEntity;
 
-  @OneToMany(() => CartEntity, (cart) => cart.foods)
+  @OneToMany(() => CartItemEntity, (cartitem) => cartitem.foods)
   cart: CartEntity;
 
   @Column({ default: true })

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
 import {
+  CartItemEntity,
   DatabaseModule,
   FOODS_SERVICE,
   ORDERS_SERVICE,
@@ -16,7 +17,7 @@ import { CartService } from './cart/cart.service';
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([OrderEntity, CartEntity]),
+    TypeOrmModule.forFeature([OrderEntity, CartEntity, CartItemEntity]),
     CartModule,
     ClientsModule.register([
       {
