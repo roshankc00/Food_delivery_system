@@ -3,7 +3,7 @@ import { FoodEntity } from '../../entities/food.entity';
 
 @Entity()
 export class CategoryEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()

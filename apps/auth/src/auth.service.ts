@@ -25,10 +25,12 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     const password = await bcrypt.hash(signUpDto.password, 10);
-    return this.userRepositary.create({
+    const newUser = this.userRepositary.create({
       ...signUpDto,
       password,
     });
+
+    return this.userRepositary.save(newUser);
   }
 
   async login(user: UserEntity, response: Response) {

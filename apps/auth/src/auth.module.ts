@@ -9,10 +9,11 @@ import { JwtStrategy } from './stratagies/jwt.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as joi from 'joi';
+import { CategoryEntity } from 'apps/foods/src/categories/entities/category.entity';
+import { FoodEntity } from 'apps/foods/src/entities/food.entity';
 @Module({
   imports: [
     DatabaseModule,
-    ConfigModule,
     TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({
       isGlobal: true,

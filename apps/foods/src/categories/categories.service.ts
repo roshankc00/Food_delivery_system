@@ -9,23 +9,32 @@ import { Repository } from 'typeorm';
 export class CategoriesService {
   constructor(
     @InjectRepository(CategoryEntity)
-    private readonly categoryRepositary: Repository<CategoryEntity>,
+    private readonly categoryRepository: Repository<CategoryEntity>,
   ) {}
-  create(createCategoryDto: CreateCategoryDto) {
-    return this.categoryRepositary.create({
+  async create(createCategoryDto: CreateCategoryDto) {
+    const data = this.categoryRepository.create({
       name: createCategoryDto.name,
     });
+    console.log(data);
+
+    return this.categoryRepository.save(data);
   }
 
   findAll() {
-    return this.categoryRepositary.find({});
+    return this.categoryRepository.find({
+      where: {
+        isDeleted: false,
+        isPublished: true,
+      },
+    });
   }
 
   async findOne(id: string) {
-    const category = await this.categoryRepositary.findOne({
+    const category = await this.categoryRepository.findOne({
       where: {
         id,
         isDeleted: false,
+        isPublished: true,
       },
     });
 
@@ -36,10 +45,11 @@ export class CategoriesService {
   }
 
   async update(id: string, updateCategoryDto: UpdateCategoryDto) {
-    const category = await this.categoryRepositary.findOne({
+    const category = await this.categoryRepository.findOne({
       where: {
         id,
         isDeleted: false,
+        isPublished: true,
       },
     });
 
@@ -49,14 +59,15 @@ export class CategoriesService {
 
     category.name = updateCategoryDto.name;
 
-    return this.categoryRepositary.save(category);
+    return this.categoryRepository.save(category);
   }
 
   async remove(id: string) {
-    const category = await this.categoryRepositary.findOne({
+    const category = await this.categoryRepository.findOne({
       where: {
         id,
         isDeleted: false,
+        isPublished: true,
       },
     });
 
@@ -64,6 +75,6 @@ export class CategoriesService {
       throw new NotFoundException();
     }
     category.isDeleted = true;
-    return this.categoryRepositary.save(category);
+    return this.categoryRepository.save(category);
   }
 }
