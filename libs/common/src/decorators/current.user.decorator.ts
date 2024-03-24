@@ -1,5 +1,5 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { UserEntity } from 'apps/auth/src/entities/auth.entity';
+import { UserEntity } from '@app/common/entities/auth.entity';
 
 const getCuurentUserByContext = (context: ExecutionContext): UserEntity => {
   return context.switchToHttp().getRequest().user;

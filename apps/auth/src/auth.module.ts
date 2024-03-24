@@ -2,15 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from './entities/auth.entity';
-import { DatabaseModule } from '@app/common';
+import { DatabaseModule, UserEntity } from '@app/common';
 import { LocalStrategy } from './stratagies/local.strategy';
 import { JwtStrategy } from './stratagies/jwt.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as joi from 'joi';
-import { CategoryEntity } from 'apps/foods/src/categories/entities/category.entity';
-import { FoodEntity } from 'apps/foods/src/entities/food.entity';
 @Module({
   imports: [
     DatabaseModule,

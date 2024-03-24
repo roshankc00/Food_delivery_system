@@ -1,19 +1,17 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateFoodDto } from './dtos/createFood.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FoodEntity } from './entities/food.entity';
 import { Repository } from 'typeorm';
-import { CategoriesService } from './categories/categories.service';
 import { UpdateFoodDto } from './dtos/update-food.dto';
 import { GetAllFoodDto } from './dtos/get-all-food.dto';
 import { FoodSort } from './enums/filter-short.enum';
+import { FoodEntity } from '@app/common';
 
 @Injectable()
 export class FoodsService {
   constructor(
     @InjectRepository(FoodEntity)
     private readonly foodRepositary: Repository<FoodEntity>,
-    private readonly categoryService: CategoriesService,
   ) {}
 
   async create(createFoodDto: CreateFoodDto) {

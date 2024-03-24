@@ -2,11 +2,14 @@ import { Module } from '@nestjs/common';
 import { FoodsController } from './foods.controller';
 import { FoodsService } from './foods.service';
 import { CategoriesModule } from './categories/categories.module';
-import { AUTH_SERVICE, DatabaseModule } from '@app/common';
+import {
+  AUTH_SERVICE,
+  CategoryEntity,
+  DatabaseModule,
+  FoodEntity,
+} from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FoodEntity } from './entities/food.entity';
 import { CategoriesService } from './categories/categories.service';
-import { CategoryEntity } from './categories/entities/category.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({

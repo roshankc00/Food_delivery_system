@@ -8,7 +8,7 @@ import {
   Timestamp,
   UpdateDateColumn,
 } from 'typeorm';
-import { CategoryEntity } from '../categories/entities/category.entity';
+import { CategoryEntity } from './category.entity';
 
 @Entity()
 export class FoodEntity {

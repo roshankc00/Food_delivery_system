@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { UserEntity } from 'apps/auth/src/entities/auth.entity';
-import { CategoryEntity } from 'apps/foods/src/categories/entities/category.entity';
-import { FoodEntity } from 'apps/foods/src/entities/food.entity';
+import { UserEntity } from '@app/common/entities/auth.entity';
+import { CategoryEntity } from '@app/common/entities/category.entity';
+import { FoodEntity } from '@app/common/entities/food.entity';
+import { OrderEntity } from '../entities';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -16,7 +17,12 @@ import { FoodEntity } from 'apps/foods/src/entities/food.entity';
       entities: [UserEntity, CategoryEntity, FoodEntity],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([UserEntity, CategoryEntity, FoodEntity]),
+    TypeOrmModule.forFeature([
+      UserEntity,
+      FoodEntity,
+      CategoryEntity,
+      OrderEntity,
+    ]),
   ],
   exports: [],
 })

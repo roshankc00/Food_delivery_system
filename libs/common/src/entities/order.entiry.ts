@@ -7,10 +7,10 @@ import {
   UpdateDateColumn,
   Timestamp,
 } from 'typeorm';
-import { FoodEntity } from '../../entities/food.entity';
+import { FoodEntity } from './food.entity';
 
 @Entity()
-export class CategoryEntity {
+export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
