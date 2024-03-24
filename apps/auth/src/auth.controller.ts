@@ -6,6 +6,7 @@ import { UserEntity } from './entities/auth.entity';
 import { JwtAuthGuard } from './guards/jwt-auth-guard';
 import { Currentuser } from './currentUser.decorator';
 import { Response } from 'express';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 @Controller('user')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -25,5 +26,11 @@ export class AuthController {
   @Post('me')
   async getme(@Currentuser() user: UserEntity | null) {
     return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @MessagePattern('authenticate')
+  async authenticate(@Payload() payload: any) {
+    return payload?.user;
   }
 }

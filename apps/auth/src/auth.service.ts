@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { SignUpDto } from './dtos/signup.dto';
 import { UserEntity } from './entities/auth.entity';
 import { Repository } from 'typeorm';
@@ -7,6 +7,7 @@ import * as bcrypt from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { JwtAuthGuard } from './guards/jwt-auth-guard';
 @Injectable()
 export class AuthService {
   constructor(
@@ -15,6 +16,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
+  @UseGuards(JwtAuthGuard)
   async signUp(signUpDto: SignUpDto) {
     const userExist = await this.userRepositary.findOne({
       where: {
@@ -34,7 +36,7 @@ export class AuthService {
   }
 
   async login(user: UserEntity, response: Response) {
-    const token = this.generateToken(user);
+    const token = await this.generateToken(user);
 
     const expires = new Date();
     expires.setSeconds(
@@ -45,8 +47,7 @@ export class AuthService {
       httpOnly: true,
       expires,
     });
-
-    return { token, user };
+    return { user, token };
   }
 
   async generateToken(user: UserEntity): Promise<string> {

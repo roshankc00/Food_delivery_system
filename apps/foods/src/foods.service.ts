@@ -15,6 +15,7 @@ export class FoodsService {
     private readonly foodRepositary: Repository<FoodEntity>,
     private readonly categoryService: CategoriesService,
   ) {}
+
   async create(createFoodDto: CreateFoodDto) {
     const { categoryId, description, discount, name, price } = createFoodDto;
     const food = this.foodRepositary.create({

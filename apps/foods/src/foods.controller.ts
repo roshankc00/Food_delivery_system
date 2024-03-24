@@ -7,17 +7,25 @@ import {
   Param,
   Delete,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { FoodsService } from './foods.service';
 import { UpdateFoodDto } from './dtos/update-food.dto';
 import { CreateFoodDto } from './dtos/createFood.dto';
 import { GetAllFoodDto } from './dtos/get-all-food.dto';
+import { CommonJwtAuthGuard, Currentuser, UserDto } from '@app/common';
 
 @Controller('foods')
 export class FoodsController {
   constructor(private readonly foodsService: FoodsService) {}
   @Post()
-  create(@Body() createFoodDto: CreateFoodDto) {
+  @UseGuards(CommonJwtAuthGuard)
+  create(
+    @Body() createFoodDto: CreateFoodDto,
+    @Currentuser()
+    user: UserDto,
+  ) {
+    console.log(user);
     return this.foodsService.create(createFoodDto);
   }
 
