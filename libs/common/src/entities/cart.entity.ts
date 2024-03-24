@@ -27,8 +27,8 @@ export class CartEntity {
   @ManyToMany(() => FoodEntity, (food) => food.cart)
   foods: FoodEntity[];
 
-  @Column({ default: true })
-  isActive: boolean;
+  @Column({ default: false })
+  isDeleted: boolean;
 
   @CreateDateColumn()
   createdAt: Timestamp;

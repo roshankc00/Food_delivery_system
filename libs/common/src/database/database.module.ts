@@ -5,6 +5,7 @@ import { UserEntity } from '@app/common/entities/user.entity';
 import { CategoryEntity } from '@app/common/entities/category.entity';
 import { FoodEntity } from '@app/common/entities/food.entity';
 import { OrderEntity } from '../entities';
+import { CartEntity } from '../entities/cart.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -14,7 +15,13 @@ import { OrderEntity } from '../entities';
       username: 'nestjsauth',
       password: 'nestjsauth',
       database: 'nestjsauth',
-      entities: [UserEntity, CategoryEntity, FoodEntity],
+      entities: [
+        UserEntity,
+        CategoryEntity,
+        FoodEntity,
+        CartEntity,
+        OrderEntity,
+      ],
       synchronize: true,
     }),
     TypeOrmModule.forFeature([
