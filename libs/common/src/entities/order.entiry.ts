@@ -6,8 +6,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   Timestamp,
+  JoinColumn,
 } from 'typeorm';
-import { FoodEntity } from './food.entity';
+import { paymentMethod } from '../enums';
+import { UserEntity } from './user.entity';
 
 @Entity()
 export class OrderEntity {
@@ -15,13 +17,26 @@ export class OrderEntity {
   id: string;
 
   @Column()
-  name: string;
+  address: string;
 
-  @Column({ default: true })
-  isPublished: boolean;
+  @Column()
+  userId: string;
 
-  @OneToMany(() => FoodEntity, (food) => food.category)
-  foods: FoodEntity[];
+  @OneToMany(() => UserEntity, (user) => user.orders)
+  @JoinColumn({ name: 'userId' })
+  user: UserEntity;
+
+  @Column()
+  phoneNumber: string;
+
+  @Column({ default: 'nepal' })
+  country: string;
+
+  @Column({ default: false })
+  paymentStatus: boolean;
+
+  @Column({ type: 'enum', enum: paymentMethod })
+  paymentMethod: string;
 
   @Column({ default: false })
   isDeleted: boolean;

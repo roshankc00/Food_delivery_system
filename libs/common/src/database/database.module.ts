@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigService } from '@nestjs/config';
-import { UserEntity } from '@app/common/entities/auth.entity';
+import { UserEntity } from '@app/common/entities/user.entity';
 import { CategoryEntity } from '@app/common/entities/category.entity';
 import { FoodEntity } from '@app/common/entities/food.entity';
 import { OrderEntity } from '../entities';

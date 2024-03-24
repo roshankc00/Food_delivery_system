@@ -7,8 +7,10 @@ import {
   CreateDateColumn,
   Timestamp,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { CategoryEntity } from './category.entity';
+import { CartEntity } from './cart.entity';
 
 @Entity()
 export class FoodEntity {
@@ -36,6 +38,9 @@ export class FoodEntity {
   @ManyToOne(() => CategoryEntity, (category) => category.foods)
   @JoinColumn({ name: 'categoryId' })
   category: CategoryEntity;
+
+  @OneToMany(() => CartEntity, (cart) => cart.foods)
+  cart: CartEntity;
 
   @Column({ default: true })
   isPublished: boolean;
