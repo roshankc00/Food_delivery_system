@@ -1,4 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  Timestamp,
+  UpdateDateColumn,
+} from 'typeorm';
 import { RoleEnum } from '../enums/role.enums';
 
 @Entity()
@@ -21,6 +28,15 @@ export class UserEntity {
   @Column()
   phoneNumber: string;
 
+  @Column({ default: false })
+  isVerified: boolean;
+
   @Column({ default: true })
   isActive: boolean;
+
+  @CreateDateColumn()
+  createdAt: Timestamp;
+
+  @UpdateDateColumn()
+  updatedAt: Timestamp;
 }

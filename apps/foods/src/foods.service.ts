@@ -5,6 +5,8 @@ import { FoodEntity } from './entities/food.entity';
 import { Repository } from 'typeorm';
 import { CategoriesService } from './categories/categories.service';
 import { UpdateFoodDto } from './dtos/update-food.dto';
+import { GetAllFoodDto } from './dtos/get-all-food.dto';
+import { FoodSort } from './enums/filter-short.enum';
 
 @Injectable()
 export class FoodsService {
@@ -15,12 +17,11 @@ export class FoodsService {
   ) {}
   async create(createFoodDto: CreateFoodDto) {
     const { categoryId, description, discount, name, price } = createFoodDto;
-    const category = await this.categoryService.findOne(categoryId);
     const food = this.foodRepositary.create({
-      category,
-      description,
       name,
+      description,
       price,
+      categoryId,
       discount,
       priceAfterDiscount: price - (discount / 100) * price,
     });
@@ -39,12 +40,6 @@ export class FoodsService {
       throw new NotFoundException();
     }
     Object.assign(food, updateFoodDto);
-    if (updateFoodDto.categoryId) {
-      const category = await this.categoryService.findOne(
-        updateFoodDto.categoryId,
-      );
-      food.category = category;
-    }
     return this.foodRepositary.save(food);
   }
 
@@ -62,13 +57,82 @@ export class FoodsService {
     return food;
   }
 
-  findAll() {
-    return this.foodRepositary.find({
-      where: {
-        isDeleted: false,
-        isPublished: true,
-      },
-    });
+  findAll(filterData: GetAllFoodDto) {
+    return this.filterFoods(filterData);
+  }
+  parseQuery(query: any): any {
+    const parsedQuery: any = {};
+
+    for (const key in query) {
+      if (Object.prototype.hasOwnProperty.call(query, key)) {
+        switch (key) {
+          case 'searchText':
+            parsedQuery.searchText = JSON.parse(query[key]);
+            break;
+          case 'maxPrice':
+            parsedQuery.maxPrice = parseFloat(query[key]);
+            break;
+          case 'sort':
+            parsedQuery.sort =
+              FoodSort[query[key].replace(/"/g, '') as keyof typeof FoodSort];
+            break;
+          default:
+            parsedQuery[key] = query[key];
+            break;
+        }
+      }
+    }
+
+    return parsedQuery;
+  }
+  async filterFoods(filterDataInput: GetAllFoodDto) {
+    const filterData = this.parseQuery(filterDataInput);
+    const foodFilterQuery = this.foodRepositary.createQueryBuilder('food');
+    if (filterData?.minPrice) {
+      foodFilterQuery.andWhere('food.priceAfterDiscount > :minPrice', {
+        minPrice: filterData.minPrice,
+      });
+    }
+    if (filterData?.maxPrice) {
+      foodFilterQuery.andWhere('food.priceAfterDiscount < :maxPrice', {
+        maxPrice: filterData.maxPrice,
+      });
+    }
+    if (filterData?.sort) {
+      switch (filterData?.sort) {
+        case FoodSort.NAME_ASC:
+          foodFilterQuery.orderBy('name', 'ASC');
+          break;
+        case FoodSort.NAME_DESC:
+          foodFilterQuery.orderBy('name', 'DESC');
+          break;
+        case FoodSort.PRICE_ASC:
+          foodFilterQuery.orderBy('priceAfterDiscount', 'ASC');
+          break;
+        case FoodSort.PRICE_DESC:
+          foodFilterQuery.orderBy('priceAfterDiscount', 'DESC');
+          break;
+        case FoodSort.CREATEDAT_ASC:
+          foodFilterQuery.orderBy('createdAt', 'ASC');
+          break;
+        case FoodSort.CREATEDAT_DESC:
+          foodFilterQuery.orderBy('createdAt', 'DESC');
+          break;
+      }
+    }
+    if (filterData?.searchText) {
+      const searchTerm = `%${filterData.searchText}%`;
+      foodFilterQuery.andWhere(
+        '(food.name LIKE :searchTerm OR food.description LIKE :searchTerm)',
+        { searchTerm },
+      );
+    }
+
+    return await foodFilterQuery
+      .skip(filterData?.skip | 0)
+      .limit(filterData?.limit | 10)
+      .leftJoinAndSelect('food.category', 'category')
+      .getMany();
   }
 
   async remove(id: string) {

@@ -1,4 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Timestamp,
+} from 'typeorm';
 import { FoodEntity } from '../../entities/food.entity';
 
 @Entity()
@@ -17,4 +25,10 @@ export class CategoryEntity {
 
   @Column({ default: false })
   isDeleted: boolean;
+
+  @CreateDateColumn()
+  createdAt: Timestamp;
+
+  @UpdateDateColumn()
+  updatedAt: Timestamp;
 }

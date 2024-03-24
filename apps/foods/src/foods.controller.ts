@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { FoodsService } from './foods.service';
 import { UpdateFoodDto } from './dtos/update-food.dto';
 import { CreateFoodDto } from './dtos/createFood.dto';
+import { GetAllFoodDto } from './dtos/get-all-food.dto';
 
 @Controller('foods')
 export class FoodsController {
@@ -20,8 +22,8 @@ export class FoodsController {
   }
 
   @Get()
-  findAll() {
-    return this.foodsService.findAll();
+  findAll(@Query() getFilterData: GetAllFoodDto) {
+    return this.foodsService.findAll(getFilterData);
   }
 
   @Get(':id')
