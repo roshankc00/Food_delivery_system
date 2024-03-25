@@ -16,15 +16,20 @@ export class AuthService {
   ) {}
   @UseGuards(JwtAuthGuard)
   async signUp(signUpDto: SignUpDto) {
-    const userExist = this.prismaService.user.findUnique({
+    const userExist = await this.prismaService.user.findUnique({
       where: {
         email: signUpDto.email,
       },
     });
+    console.log(userExist);
     if (userExist) {
       throw new UnauthorizedException();
     }
     const password = await bcrypt.hash(signUpDto.password, 10);
+
+    return await this.prismaService.user.create({
+      data: { ...signUpDto, password },
+    });
   }
 
   async login(user: User, response: Response) {

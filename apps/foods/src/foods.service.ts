@@ -20,6 +20,7 @@ export class FoodsService {
         priceAfterDiscount: price - (discount / 100) * price,
       },
     });
+    return food;
   }
 
   async update(id: string, updateFoodDto: UpdateFoodDto) {
