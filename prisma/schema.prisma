@@ -12,6 +12,11 @@ enum Role {
   Admin
 }
 
+enum PAYMENTMETHOD {
+  CASHONDELIVERY
+  STRIPE
+}
+
 model User {
   id          String   @id @default(uuid())
   name        String
@@ -23,6 +28,7 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   Cart        Cart[]
+  order       order[]
 }
 
 model Category {
@@ -52,20 +58,26 @@ model Food {
 
 model order {
   id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Cart {
-  id        String     @id @default(uuid())
-  userId    String
-  user      User       @relation(fields: [userId], references: [id])
-  isDeleted Boolean    @default(false)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  CartItem  CartItem[]
-  Order     Order[]
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id])
+  isDeleted     Boolean       @default(false)
+  paymentMethod PAYMENTMETHOD
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  CartItem      CartItem[]
+  Order         Order[]
+  order         order[]
 }
 
 model CartItem {

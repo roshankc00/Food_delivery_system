@@ -1,24 +1,13 @@
 import { Module } from '@nestjs/common';
 import { OrdersController } from './orders.controller';
 import { OrdersService } from './orders.service';
-import {
-  AUTH_SERVICE,
-  CartEntity,
-  CartItemEntity,
-  DatabaseModule,
-  FOODS_SERVICE,
-  OrderEntity,
-} from '@app/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { AUTH_SERVICE, FOODS_SERVICE, PrismaService } from '@app/common';
 import { CartModule } from './cart/cart.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { CartService } from './cart/cart.service';
 
 @Module({
   imports: [
-    DatabaseModule,
-    TypeOrmModule.forFeature([CartEntity, CartItemEntity, OrderEntity]),
-
     CartModule,
     ClientsModule.register([
       {
@@ -40,6 +29,6 @@ import { CartService } from './cart/cart.service';
     ]),
   ],
   controllers: [OrdersController],
-  providers: [OrdersService, CartService],
+  providers: [OrdersService, CartService, PrismaService],
 })
 export class OrdersModule {}

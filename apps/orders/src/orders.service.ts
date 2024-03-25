@@ -1,18 +1,13 @@
-import { FOODS_SERVICE, OrderEntity } from '@app/common';
+import { FOODS_SERVICE, PrismaService } from '@app/common';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
-  constructor(
-    @InjectRepository(OrderEntity)
-    private readonly orderRepositary: Repository<OrderEntity>,
-  ) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   findAll() {
-    return this.orderRepositary.find({
+    return this.prismaService.order.findMany({
       where: {
         isDeleted: false,
       },
@@ -20,20 +15,22 @@ export class OrdersService {
   }
 
   findOne(id: string) {
-    return this.orderRepositary.findOne({
+    return this.prismaService.order.findUnique({
       where: {
         id,
       },
     });
   }
   async remove(id: string) {
-    const order = await this.orderRepositary.findOne({
+    const order = await this.prismaService.order.update({
       where: {
         id,
       },
+      data: {
+        isDeleted: true,
+      },
     });
 
-    order.isDeleted = true;
-    return this.orderRepositary.save(order);
+    return order;
   }
 }
