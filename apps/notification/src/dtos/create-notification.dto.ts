@@ -9,7 +9,5 @@ export class CreateNotification {
   subject: string;
   @IsString()
   @IsNotEmpty()
-  template: string;
-  @IsNotEmpty()
-  data: { [key: string]: number | string };
+  html: string;
 }

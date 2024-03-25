@@ -15,21 +15,22 @@ import { User } from '@prisma/client';
 @Controller('cart')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
-  @Post('addToCart')
+  @Post('add')
   @UseGuards(CommonJwtAuthGuard)
-  addToCart(
+  increase(
     @Body() increaseDecreaseCartDto: IncreaseDecreaseCartDto,
     @Currentuser() user: User,
   ) {
     return this.cartService.addToCart(increaseDecreaseCartDto, user);
   }
 
-  @Post('addToCart')
+  @Post('decrease')
   @UseGuards(CommonJwtAuthGuard)
-  decreateCart(
+  decrease(
     @Body() increaseDecreaseCartDto: IncreaseDecreaseCartDto,
     @Currentuser() user: User,
   ) {
+    return user;
     return this.cartService.decreateCart(increaseDecreaseCartDto, user);
   }
 

@@ -18,15 +18,25 @@ export class PaymentService {
       apiVersion: '2023-10-16',
     },
   );
-  async createCharge({ amount }: { amount: number }) {
-    const paymentIntent = await this.stipe.paymentIntents.create({
-      amount: amount * 100,
-      confirm: true,
-      currency: 'usd',
-      payment_method: 'pm_card_visa',
-      return_url: 'https://www.linkedin.com/feed/',
-    });
+
+  async createCharge({ amount, email }: { amount: number; email: string }) {
+    try {
+      console.log('payment');
+      await this.stipe.paymentIntents.create({
+        amount: amount * 100,
+        confirm: true,
+        currency: 'usd',
+        payment_method: 'pm_card_visa',
+        return_url: 'https://www.linkedin.com/feed/',
+      });
+      this.notificationService.emit('notify_email', {
+        email,
+        html: `<h1> payment of ${amount * 100} completed successfully </h1>`,
+        subject: 'Payment successfull',
+      });
+    } catch (error) {
+      console.log(error);
+    }
     // todo:payment notification to the user
-    return paymentIntent;
   }
 }

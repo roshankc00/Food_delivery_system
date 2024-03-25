@@ -12,10 +12,7 @@ import { UserDto } from '../dtos';
 
 @Injectable()
 export class CommonJwtAuthGuard implements CanActivate {
-  constructor(
-    @Inject(AUTH_SERVICE) private readonly authClient: ClientProxy,
-    private readonly reflector: Reflector,
-  ) {}
+  constructor(@Inject(AUTH_SERVICE) private readonly authClient: ClientProxy) {}
 
   canActivate(
     context: ExecutionContext,

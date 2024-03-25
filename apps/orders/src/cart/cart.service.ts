@@ -35,6 +35,8 @@ export class CartService {
         foodId,
       })
       .toPromise();
+
+    console.log(foodItem);
     if (!foodItem) {
       throw new NotFoundException();
     }
@@ -197,11 +199,18 @@ export class CartService {
     });
   }
 
-  async getCartOfUser(user: User) {
+  async getCartOfUser(userId: string) {
     return await this.prismService.cart.findFirst({
       where: {
-        userId: user.id,
+        userId: userId,
         isDeleted: false,
+      },
+      include: {
+        CartItem: {
+          include: {
+            food: true,
+          },
+        },
       },
     });
   }

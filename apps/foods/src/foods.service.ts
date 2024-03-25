@@ -32,6 +32,7 @@ export class FoodsService {
     if (!foodExist) {
       throw new NotFoundException();
     }
+
     const food = await this.prismaService.food.update({
       where: {
         id,
