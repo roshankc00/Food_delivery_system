@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  User
+  Admin
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  phoneNumber String   @unique
+  email       String   @unique
+  password    String
+  isActive    Boolean  @default(true)
+  role        Role     @default(User)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Cart        Cart[]
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Food      Food[]
+}
+
+model Food {
+  id                 String     @id @default(uuid())
+  name               String
+  categoryId         String
+  description        String     @db.Text
+  category           Category   @relation(fields: [categoryId], references: [id])
+  price              Int
+  discount           Int
+  priceAfterDiscount Float
+  isPublished        Boolean    @default(true)
+  isDeleted          Boolean    @default(false)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  CartItem           CartItem[]
+}
+
+model order {
+  id        String   @id @default(uuid())
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String
+  user      User       @relation(fields: [userId], references: [id])
+  isDeleted Boolean    @default(false)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  CartItem  CartItem[]
+  Order     Order[]
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  foodId    String
+  quantity  Int
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  food      Food     @relation(fields: [foodId], references: [id])
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  isDeleted Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

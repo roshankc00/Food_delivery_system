@@ -1,17 +1,14 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DatabaseModule, UserEntity } from '@app/common';
 import { LocalStrategy } from './stratagies/local.strategy';
 import { JwtStrategy } from './stratagies/jwt.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as joi from 'joi';
+import { PrismaService } from '@app/common';
 @Module({
   imports: [
-    DatabaseModule,
-    TypeOrmModule.forFeature([UserEntity]),
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: joi.object({
@@ -36,6 +33,7 @@ import * as joi from 'joi';
     JwtService,
     LocalStrategy,
     JwtStrategy,
+    PrismaService,
   ],
 })
 export class AuthModule {}

@@ -10,7 +10,6 @@ export class OrdersService {
     @InjectRepository(OrderEntity)
     private readonly orderRepositary: Repository<OrderEntity>,
   ) {}
-  create(createHahaDto: any) {}
 
   findAll() {
     return this.orderRepositary.find({

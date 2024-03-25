@@ -4,7 +4,4 @@ export class IncreaseDecreaseCartDto {
   @IsString()
   @IsNotEmpty()
   foodId: string;
-  @IsString()
-  @IsNotEmpty()
-  cartId: string;
 }

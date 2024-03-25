@@ -1,7 +1,7 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
-import { UserEntity } from '../../../libs/common/src/entities/user.entity';
+import { User } from '@prisma/client';
 
-const getCuurentUserByContext = (context: ExecutionContext): UserEntity => {
+const getCuurentUserByContext = (context: ExecutionContext): User => {
   return context.switchToHttp().getRequest().user;
 };
 

@@ -1,8 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { FoodEntity } from '../../../../../libs/common/src/entities/food.entity';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-@Entity()
 export class CreateCategoryDto {
   @IsString()
   @IsNotEmpty()

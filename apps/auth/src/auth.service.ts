@@ -1,24 +1,22 @@
 import { Injectable, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { SignUpDto } from './dtos/signup.dto';
-import { UserEntity } from '../../../libs/common/src/entities/user.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { JwtAuthGuard } from './guards/jwt-auth-guard';
+import { PrismaService } from '@app/common';
+import { User } from '@prisma/client';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(UserEntity)
-    private readonly userRepositary: Repository<UserEntity>,
+    private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
   ) {}
   @UseGuards(JwtAuthGuard)
   async signUp(signUpDto: SignUpDto) {
-    const userExist = await this.userRepositary.findOne({
+    const userExist = this.prismaService.user.findUnique({
       where: {
         email: signUpDto.email,
       },
@@ -27,15 +25,9 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     const password = await bcrypt.hash(signUpDto.password, 10);
-    const newUser = this.userRepositary.create({
-      ...signUpDto,
-      password,
-    });
-
-    return this.userRepositary.save(newUser);
   }
 
-  async login(user: UserEntity, response: Response) {
+  async login(user: User, response: Response) {
     const token = await this.generateToken(user);
 
     const expires = new Date();
@@ -50,7 +42,7 @@ export class AuthService {
     return { user, token };
   }
 
-  async generateToken(user: UserEntity): Promise<string> {
+  async generateToken(user: User): Promise<string> {
     const payload = {
       userId: user.id,
     };
@@ -59,8 +51,8 @@ export class AuthService {
     });
   }
 
-  async validate(email: string, password: string): Promise<UserEntity> {
-    const userExist = await this.userRepositary.findOne({
+  async validate(email: string, password: string): Promise<User> {
+    const userExist = await this.prismaService.user.findFirst({
       where: {
         email,
       },
@@ -77,9 +69,9 @@ export class AuthService {
   }
 
   async getSingleUser(id: string) {
-    return this.userRepositary.findOne({
+    return this.prismaService.user.findUnique({
       where: {
-        id: id,
+        id,
       },
     });
   }

@@ -2,18 +2,18 @@ import { Module } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { CartController } from './cart.controller';
 import {
+  AUTH_SERVICE,
+  CartEntity,
   CartItemEntity,
   DatabaseModule,
   FOODS_SERVICE,
-  ORDERS_SERVICE,
-  OrderEntity,
 } from '@app/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CartEntity } from '@app/common/entities/cart.entity';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    DatabaseModule,
     TypeOrmModule.forFeature([CartEntity, CartItemEntity]),
     ClientsModule.register([
       {
@@ -22,6 +22,14 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         options: {
           host: 'localhost',
           port: 3003,
+        },
+      },
+      {
+        name: AUTH_SERVICE,
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3001,
         },
       },
     ]),

@@ -2,11 +2,11 @@ import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dtos/signup.dto';
 import { JwtLocalGuard } from './guards/local-auth-guard';
-import { UserEntity } from '../../../libs/common/src/entities/user.entity';
 import { JwtAuthGuard } from './guards/jwt-auth-guard';
 import { Currentuser } from './currentUser.decorator';
 import { Response } from 'express';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { User } from '@prisma/client';
 @Controller('user')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -18,13 +18,13 @@ export class AuthController {
   @UseGuards(JwtLocalGuard)
   loginUser(
     @Res({ passthrough: true }) response: Response,
-    @Currentuser() user: UserEntity | null,
+    @Currentuser() user: User | null,
   ) {
     return this.authService.login(user, response);
   }
 
   @Post('me')
-  async getme(@Currentuser() user: UserEntity | null) {
+  async getme(@Currentuser() user: User | null) {
     return user;
   }
 

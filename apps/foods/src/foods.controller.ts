@@ -32,7 +32,6 @@ export class FoodsController {
     @Currentuser()
     user: UserDto,
   ) {
-    console.log(user);
     return this.foodsService.create(createFoodDto);
   }
 
