@@ -4,6 +4,7 @@ import { OrdersService } from './orders.service';
 import {
   AUTH_SERVICE,
   FOODS_SERVICE,
+  HealthModule,
   PAYMENT_SERVICE,
   PrismaService,
 } from '@app/common';
@@ -40,6 +41,7 @@ import { CartService } from './cart/cart.service';
         },
       },
     ]),
+    HealthModule,
   ],
   controllers: [OrdersController],
   providers: [OrdersService, CartService, PrismaService],

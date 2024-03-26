@@ -6,9 +6,10 @@ import { JwtStrategy } from './stratagies/jwt.strategy';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as joi from 'joi';
-import { PrismaService } from '@app/common';
+import { HealthModule, PrismaService } from '@app/common';
 @Module({
   imports: [
+    HealthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: joi.object({

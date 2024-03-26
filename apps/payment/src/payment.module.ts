@@ -2,11 +2,16 @@ import { Module } from '@nestjs/common';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { NOTIFICATION_SERVICE, PAYMENT_SERVICE } from '@app/common';
+import {
+  HealthModule,
+  NOTIFICATION_SERVICE,
+  PAYMENT_SERVICE,
+} from '@app/common';
 import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    HealthModule,
     ClientsModule.register([
       {
         name: NOTIFICATION_SERVICE,

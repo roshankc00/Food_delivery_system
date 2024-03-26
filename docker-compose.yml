@@ -5,10 +5,72 @@ services:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_USER=nestjsauth
-      - POSTGRES_PASSWORD=nestjsauth
-      - POSTGRES_DB=nestjsauth
+      - POSTGRES_USER=nestjsauthmicro
+      - POSTGRES_PASSWORD=nestjsauthmicrco
+      - POSTGRES_DB=nestjsauthmicro
     ports:
       - '5432:5432'
     volumes:
       - ./docker-volumes/postgres:/var/lib/postgresql
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    env_file:
+      - ./app/auth/.env
+    ports:
+      - '3001:3001'
+      - '3000:3000'
+    volumes:
+      - .:/user/src/app
+  foods:
+    build:
+      context: .
+      dockerfile: ./apps/foods/Dockerfile
+      target: development
+    command: pnpm run start:dev foods
+    env_file:
+      - ./apps/foods/.env
+    ports:
+      - '3003:3003'
+      - '3002:3002'
+    volumes:
+      - .:/user/src/app
+  notification:
+    build:
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      target: development
+    command: pnpm run start:dev notification
+    env_file:
+      - ./apps/notification/.env
+    ports:
+      - '3004:3004'
+    volumes:
+      - .:/user/src/app
+  orders:
+    build:
+      context: .
+      dockerfile: ./apps/orders/Dockerfile
+      target: development
+    command: pnpm run start:dev orders
+    env_file:
+      - ./apps/orders/.env
+    ports:
+      - '3008:3008'
+    volumes:
+      - .:/user/src/app
+  payment:
+    build:
+      context: .
+      dockerfile: ./apps/payment/Dockerfile
+      target: development
+    command: pnpm run start:dev payment
+    env_file:
+      - ./apps/payment/.env
+    ports:
+      - '3007:3007'
+    volumes:
+      - .:/user/src/app

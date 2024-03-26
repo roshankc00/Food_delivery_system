@@ -4,7 +4,7 @@ import { NotificationService } from './notification.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { AUTH_SERVICE } from '@app/common';
+import { AUTH_SERVICE, HealthModule } from '@app/common';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +36,7 @@ import { AUTH_SERVICE } from '@app/common';
         },
       },
     ]),
+    HealthModule,
   ],
   controllers: [NotificationController],
   providers: [NotificationService, ConfigService],

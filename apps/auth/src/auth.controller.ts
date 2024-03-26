@@ -7,9 +7,14 @@ import { Currentuser } from './currentUser.decorator';
 import { Response } from 'express';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User } from '@prisma/client';
-@Controller('user')
+@Controller('')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @Get()
+  haha() {
+    return true;
+  }
   @Post('signup')
   createUser(@Body() signUpDto: SignUpDto) {
     return this.authService.signUp(signUpDto);

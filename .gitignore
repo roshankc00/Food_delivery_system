@@ -6,6 +6,7 @@
 # Logs
 logs
 *.log
+/dist
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
@@ -47,11 +48,15 @@ docker-volumes
 .temp
 .tmp
 
+./dist
+dist
 # Runtime data
 pids
 *.pid
 *.seed
 *.pid.lock
+
+./specs/node_modules
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

@@ -4,3 +4,4 @@ export * from './dtos';
 export * from './constants';
 export * from './enums';
 export * from './prisma';
+export * from './health';
