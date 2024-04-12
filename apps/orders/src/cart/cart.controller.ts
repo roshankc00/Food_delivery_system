@@ -11,8 +11,10 @@ import { IncreaseDecreaseCartDto } from './dto/increaseDecreaseCart.dto';
 import { CartService } from './cart.service';
 import { CommonJwtAuthGuard, Currentuser } from '@app/common';
 import { User } from '@prisma/client';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('cart')
+@ApiTags('Order')
 export class CartController {
   constructor(private readonly cartService: CartService) {}
   @Post('add')

@@ -7,15 +7,17 @@ import { Currentuser } from './currentUser.decorator';
 import { Response } from 'express';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { User } from '@prisma/client';
-@Controller('')
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+@Controller()
+@ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get()
-  haha() {
-    return true;
-  }
   @Post('signup')
+  @ApiOperation({
+    summary: 'Register the new User',
+  })
+  @ApiResponse({ status: 201, description: 'It will return the New User' })
   createUser(@Body() signUpDto: SignUpDto) {
     return this.authService.signUp(signUpDto);
   }

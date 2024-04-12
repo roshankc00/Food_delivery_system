@@ -6,7 +6,7 @@ services:
     restart: always
     environment:
       - POSTGRES_USER=nestjsauthmicro
-      - POSTGRES_PASSWORD=nestjsauthmicrco
+      - POSTGRES_PASSWORD=nestjsauthmicro
       - POSTGRES_DB=nestjsauthmicro
     ports:
       - '5432:5432'
